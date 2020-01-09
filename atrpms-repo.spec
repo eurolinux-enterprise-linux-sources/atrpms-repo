@@ -1,22 +1,11 @@
 Summary: Configuration files for package managers.
 Name: atrpms-repo
-Version: %{distversion}
-Release: 4%{?dist}
+Version: 6
+Release: 5.el6
 License: GPLv3
 Group: System Environment/Base
 URL: http://ATrpms.net/
-Source0: RPM-GPG-KEY-atrpms
-Source1: atrpms.repo.in
-Source2: atrpms-testing.repo.in
-Source3: atrpms-bleeding.repo.in
-Source4: atrpms.channel.in
-Source5: atrpms-testing.channel.in
-Source6: atrpms-bleeding.channel.in
-Source7: atrpms.list.in
-Source8: atrpms-testing.list.in
-Source9: atrpms-bleeding.list.in
-Source10: f.sed
-Source11: el.sed
+Source0: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Obsoletes: fedora-package-config, redhat-package-config
 Provides: fedora-package-config, redhat-package-config
@@ -29,40 +18,12 @@ Provides: atrpms-package-config
 This package contains configuration files for yum, smart and apt.
 
 %prep
-%setup -q -T -c
-
-%build
-cp -a %{SOURCE10} %{SOURCE11} .
-cat %distinitials.sed > temp.sed
-cat >> temp.sed <<EOF
-s,@DISTARCH@,%{distinitials}%{distversion}-%{_target_cpu},g
-s,@DISTINITIALS@,%{distinitials},g
-s,@DIST@,$dist,g
-s,@DISTVERSION@,%{distversion},g
-s,@ARCH@,%{_target_cpu},g
-EOF
-
-for s in %{SOURCE1} %{SOURCE2} %{SOURCE3} \
-         %{SOURCE4} %{SOURCE5} %{SOURCE6} \
-         %{SOURCE7} %{SOURCE8} %{SOURCE9}; do
-  f=`echo $s | sed -e's,.*/\([^/]*\)\.in$,\1,'`
-  sed -f temp.sed < $s > $f
-  touch -r $s $f
-done
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-
-mkdir -p %{buildroot}%{_sysconfdir}/pki/rpm-gpg
-install -p %{SOURCE0} %{buildroot}%{_sysconfdir}/pki/rpm-gpg
-
-mkdir -p %{buildroot}%{_sysconfdir}/yum.repos.d
-install -p *.repo %{buildroot}%{_sysconfdir}/yum.repos.d
-mkdir -p %{buildroot}%{_sysconfdir}/smart/channels
-install -p *.channel %{buildroot}%{_sysconfdir}/smart/channels
-mkdir -p %{buildroot}%{_sysconfdir}/apt/sources.d
-install -p *.list %{buildroot}%{_sysconfdir}/apt/sources.d
+cd %{buildroot}
+tar xvfz %{SOURCE0}
 
 %post
 for x in %{_sysconfdir}/apt/* %{_sysconfdir}/apt/*/* \
@@ -95,6 +56,9 @@ rm -rf %{buildroot}
 %{_sysconfdir}/apt
 
 %changelog
+* Wed Mar  9 2011 Troy Dawson <dawson@fnal.gov>
+- Changed the yum repos from $releasever to 6
+
 * Sat Jan  2 2010 Axel Thimm <Axel.Thimm@ATrpms.net>
 - Update signing key.
 

@@ -1,9 +1,0 @@
-# 
-# atrpms
-# @DISTFULLNAME@ @DISTVERSION@ - @ARCH@
-# 
-#repomd http://dl.atrpms.net @DISTARCH@/atrpms/bleeding
-
-#repomd http://dl.atrpms.net debug/@DISTARCH@/atrpms/bleeding
-
-#repomd http://dl.atrpms.net src/@DISTARCH@/atrpms/bleeding
