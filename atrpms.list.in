@@ -1,0 +1,9 @@
+# 
+# atrpms
+# @DISTFULLNAME@ @DISTVERSION@ - @ARCH@
+# 
+repomd http://dl.atrpms.net @DISTARCH@/atrpms/stable
+
+#repomd http://dl.atrpms.net debug/@DISTARCH@/atrpms/stable
+
+#repomd http://dl.atrpms.net src/@DISTARCH@/atrpms/stable
